@@ -31,4 +31,10 @@ public class BoardController
 	{
 		return "/board/view";
 	}
+	
+	@RequestMapping(value="/view.do")
+	public String show()
+	{
+		return "/board/view";
+	}
 }
