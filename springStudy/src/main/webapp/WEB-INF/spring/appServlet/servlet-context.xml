@@ -22,6 +22,8 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="edu.springStudy.controller" />
+	<context:component-scan base-package="edu.springStudy.service" />
+	<context:component-scan base-package="edu.springStudy.dao" />
 	
 	
 	

@@ -14,26 +14,21 @@
 	<h2>게시글 목록</h2>
 	게시글 목록 화면입니다.
 	<br>
-	나중에 실제 목록을 뿌려볼거예요.
-	<a href="<%=request.getContextPath()%>/board/view.do">게시글 상세 페이지로 이동</a><br>
 	<table border="1">
+		<tr>
+			<th>번호</th>
+			<th>제목</th>
+			<th>작성일</th>
+			<th>조회수</th>
+		</tr>
 		<c:forEach items="${list }" var="board">
 			<tr>
-				<td>${board }</td>
+				<td>${board.bidx }</td>
+				<td><a href="view.do?bidx=${board.bidx }">${board.title }</a></td>
+				<td>${board.wdate }</td>
+				<td>${board.hit }</td>
 			</tr>
 		</c:forEach>
-	</table>
-	<table border="1">
-		<% for(int i = 0; i < list.size(); i++)
-		{
-			String board = list.get(i);
-		%>
-		<tr>
-			<td><%=board %></td>
-		</tr>
-		<%
-		}
-		%>
 	</table>
 </body>
 </html>

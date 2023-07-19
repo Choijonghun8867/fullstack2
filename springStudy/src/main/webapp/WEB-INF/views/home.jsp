@@ -22,5 +22,6 @@
 <p>
 	<a href="<%=request.getContextPath()%>/board/list.do">board/list.do로 이동</a>
 </p>
+	<a href="<%=request.getContextPath()%>/user/list.do">회원목록으로 이동</a>
 </body>
 </html>
