@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,8 +30,11 @@
 			<td>${vo.body}</td>
 		</tr>
 	</table>
+	
+	<c:if test="${not empty login and login.id eq vo.id}">
 	<button onclick="location.href='modify.do?bidx=${vo.bidx }'">수정하기</button>
 	<button onclick="delFn()">삭제하기</button>
+	</c:if>
 	<form name="frm" action="delete.do" method="post">
 		<input type="hidden" name="bidx" value="${vo.bidx }">
 	</form>

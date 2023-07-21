@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.springStudy.service.BoardService;
 import edu.springStudy.vo.BoardVO;
+import edu.springStudy.vo.SearchVO;
+import edu.springStudy.vo.UserVO;
 
 @RequestMapping(value="/board")
 @Controller
@@ -24,7 +28,7 @@ public class BoardController
 	private BoardService boardService;
 	
 	@RequestMapping(value="/list.do")
-	public String list(Model model)
+	public String list(Model model, SearchVO searchVO)
 	{
 /*		List<String> list = new ArrayList<String>();
 		
@@ -33,7 +37,7 @@ public class BoardController
 		list.add("세번째 게시물입니다");
 		list.add("네번째 게시물입니다");
 */
-		List<BoardVO> list = boardService.list();
+		List<BoardVO> list = boardService.list(searchVO);
 		model.addAttribute("list", list);
 		return "/board/list";
 	}
@@ -47,24 +51,37 @@ public class BoardController
 	}
 	
 	@RequestMapping(value="/write.do", method = RequestMethod.GET)
-	public String write()
+	public String write(HttpServletRequest req)
 	{
+			HttpSession session = req.getSession();
+		
+		UserVO loginVO = (UserVO)session.getAttribute("login");
+		if(loginVO == null)
+		{
+			return "redirect:list.do";
+		}
 		return "/board/write";
 	}
 	
 	@RequestMapping(value="/write.do", method = RequestMethod.POST)
-	public String write(BoardVO boardVo)
+	public String write(BoardVO boardVO, HttpServletRequest req)
 	{
-		System.out.println(boardVo.getBidx());
-		System.out.println(boardVo.getBody());
-		System.out.println(boardVo.getHit());
-		System.out.println(boardVo.getId());
-		System.out.println(boardVo.getTitle());
-		System.out.println(boardVo.getWdate());
+		HttpSession session = req.getSession();
+		
+		UserVO loginVO = (UserVO)session.getAttribute("login");
 		
 		//System.out.println(boardVo.toString()); toString 이용한 방법
+		if(loginVO == null)
+		{
+			return "redirect:list.do";
+		}
+		boardVO.setId(loginVO.getId());//아이디를 받아온후 insert메소드 호출
 		
-		return "redirect:/board/list.do";
+		int result = boardService.insert(boardVO);
+		
+		System.out.println(boardVO.toString());
+		
+		return "redirect:view.do?bidx="+boardVO.getBidx();
 	}
 	
 	@RequestMapping(value="/modify.do", method = RequestMethod.GET)
