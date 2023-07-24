@@ -25,6 +25,7 @@
 	<table border="1">
 		<tr>
 			<th>번호</th>
+			<th>글쓴이</th>
 			<th>제목</th>
 			<th>작성일</th>
 			<th>조회수</th>
@@ -39,7 +40,7 @@
 			</tr>
 		</c:forEach>
 		<c:if test="${not empty login }">
-		<a href="<%=request.getContextPath()%>/board/write.do">글쓰기로 이동</a>
+		<a href="<%=request.getContextPath()%>/board/write.do">글쓰기로 이동</a><br>
 		</c:if>
 		<a href="view.do">게시글 상세페이지로 이동</a>
 	</table>

@@ -39,5 +39,12 @@ ${login.name }님 환영합니다.
 <p>
 	<a href="<%=request.getContextPath()%>/ajax/sample.do ">ajax 화면</a>
 </p>
+
+<p>
+	<a href="<%=request.getContextPath()%>/fileupload.do">파일 업로드하러 가기</a>
+</p>
+<c:if test="${not empty param.fileNM}">
+<img src="<%=request.getContextPath()%>/resources/upload/${param.fileNM}">
+</c:if>
 </body>
 </html>

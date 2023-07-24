@@ -27,6 +27,7 @@
 	<context:component-scan base-package="edu.springStudy.service" />
 	<context:component-scan base-package="edu.springStudy.dao" />
 	
-	
+	<beans:bean id="multipartResolver" 
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 	
 </beans:beans>

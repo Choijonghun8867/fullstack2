@@ -1,5 +1,6 @@
 package edu.springStudy.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import edu.springStudy.service.BoardService;
 import edu.springStudy.vo.BoardVO;
@@ -64,7 +66,7 @@ public class BoardController
 	}
 	
 	@RequestMapping(value="/write.do", method = RequestMethod.POST)
-	public String write(BoardVO boardVO, HttpServletRequest req)
+	public String write(BoardVO boardVO, HttpServletRequest req, MultipartFile uploadFile) throws Exception, Exception
 	{
 		HttpSession session = req.getSession();
 		
@@ -74,6 +76,31 @@ public class BoardController
 		if(loginVO == null)
 		{
 			return "redirect:list.do";
+		}
+		
+		String realPath = req.getSession().getServletContext().getRealPath("/resources/upload");
+		File dir = new File(realPath);
+		if(!dir.exists()) 
+		{
+			dir.mkdirs();
+		}
+		
+		if(!uploadFile.getOriginalFilename().isEmpty()) 
+		{
+			
+			String fileNM = uploadFile.getOriginalFilename();
+			
+			String fileNMArray[] = fileNM.split("\\.");
+			String etc =  fileNMArray[fileNMArray.length-1];
+			
+			long timeMilis = System.currentTimeMillis();
+			
+			//test.jpg
+			//start index : 0 , end index :4 => 8- 4
+			String newFileNM 
+			= fileNM.substring(0,fileNM.length()-etc.length()-1)+timeMilis+"."+etc;
+			
+			uploadFile.transferTo(new File(realPath,newFileNM));
 		}
 		boardVO.setId(loginVO.getId());//아이디를 받아온후 insert메소드 호출
 		
