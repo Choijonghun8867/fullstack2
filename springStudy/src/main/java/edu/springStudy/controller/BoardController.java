@@ -66,7 +66,7 @@ public class BoardController
 	}
 	
 	@RequestMapping(value="/write.do", method = RequestMethod.POST)
-	public String write(BoardVO boardVO, HttpServletRequest req, MultipartFile uploadFile) throws Exception, Exception
+	public String write(BoardVO boardVO, HttpServletRequest req)
 	{
 		HttpSession session = req.getSession();
 		
@@ -76,31 +76,6 @@ public class BoardController
 		if(loginVO == null)
 		{
 			return "redirect:list.do";
-		}
-		
-		String realPath = req.getSession().getServletContext().getRealPath("/resources/upload");
-		File dir = new File(realPath);
-		if(!dir.exists()) 
-		{
-			dir.mkdirs();
-		}
-		
-		if(!uploadFile.getOriginalFilename().isEmpty()) 
-		{
-			
-			String fileNM = uploadFile.getOriginalFilename();
-			
-			String fileNMArray[] = fileNM.split("\\.");
-			String etc =  fileNMArray[fileNMArray.length-1];
-			
-			long timeMilis = System.currentTimeMillis();
-			
-			//test.jpg
-			//start index : 0 , end index :4 => 8- 4
-			String newFileNM 
-			= fileNM.substring(0,fileNM.length()-etc.length()-1)+timeMilis+"."+etc;
-			
-			uploadFile.transferTo(new File(realPath,newFileNM));
 		}
 		boardVO.setId(loginVO.getId());//아이디를 받아온후 insert메소드 호출
 		
